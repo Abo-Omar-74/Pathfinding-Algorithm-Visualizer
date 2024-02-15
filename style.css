@@ -1,0 +1,60 @@
+/* CSS styles for the grid */
+body {
+  text-align: center;
+}
+#grid-container {
+  display: inline-block;
+  margin-top: 20px;
+}
+table {
+  border-collapse: collapse;
+  margin: auto;
+}
+td {
+  width: 20px;
+  height: 20px;
+  border: 1px solid black;
+}
+.start {
+  background-color: green;
+}
+.end {
+  background-color: red;
+}
+.obstacle {
+  background-color: brown;
+}
+.wall {
+  background-color: black;
+}
+.visited {
+  background-color: yellow;
+}
+.path {
+  background-color: blue;
+}
+
+/* CSS styles for the navigation buttons */
+#button-container {
+  margin-top: 10px;
+}
+.algo-button,
+.action-button {
+  display: inline-block;
+  padding: 5px 10px;
+  border: 1px solid black;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+.algo-button:hover,
+.action-button:hover {
+  background-color: black;
+  color: white;
+}
+.action-button {
+  margin-bottom: 10px;
+}
+.active {
+  background-color: black;
+  color: white;
+}

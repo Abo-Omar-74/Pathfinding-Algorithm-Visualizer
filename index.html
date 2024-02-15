@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Path Finding Algorithm Visualizer</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="grid-container">
+      <table id="grid"></table>
+    </div>
+
+    <div id="button-container">
+      <span class="action-button button" id="start-point-button"
+        >Start Point</span
+      >
+      <span class="action-button button" id="end-point-button">End Point</span>
+      <span class="action-button button" id="obstacle-button">Obstacle</span>
+      <span class="action-button button" id="remove-obstacle-button"
+        >Remove Obstacle</span
+      >
+      <span class="action-button button" id="clear-button">Clear</span>
+    </div>
+
+    <div id="algo-container">
+      <span class="algo-button button" id="bfs-button">BFS</span>
+      <span class="algo-button button" id="dfs-button">DFS</span>
+      <span class="algo-button button" id="dijkstra-button">Dijkstra</span>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="BFS.js"></script>
+  </body>
+</html>
