@@ -31,7 +31,7 @@ function createGrid() {
     gridElement.appendChild(row);
   }
   // Handling performance issue
-  gridElement.addEventListener("mouseleave", onGridCellMouseLeave);
+  gridElement.addEventListener("mouseleave", onGridMouseLeave);
 }
 
 window.onload = createGrid;
@@ -51,6 +51,7 @@ endButton.addEventListener("click", function () {
 });
 obstaclesButton.addEventListener("click", function () {
   onButtonClick("obstacle-button");
+  onObstacleButtonClick();
 });
 RemoveObstacleButton.addEventListener("click", function () {
   onButtonClick("remove-obstacle-button");
@@ -112,20 +113,7 @@ function onGridCellClick(event) {
     const [row, col] = cell.id.split("-").map(Number);
     endRow = row;
     endCol = col;
-  } /*else if (
-    document.getElementById("obstacle-button").classList.contains("active")
-  ) {
-    const [row, col] = cell.id.split("-").map(Number);
-    if (
-      !(
-        (row === startRow && col === startCol) ||
-        (row === endRow && col === endCol)
-      )
-    ) {
-      grid[row][col] = 1;
-      cell.classList.add("obstacle");
-    }
-  }*/ else if (
+  } else if (
     document
       .getElementById("remove-obstacle-button")
       .classList.contains("active")
@@ -142,6 +130,9 @@ function onGridCellClick(event) {
     }
   }
 }
+
+/****Handling Adding Obstacle****/
+
 function onGridCellMouseenter(event) {
   const cell = event.target;
   if (
@@ -164,12 +155,14 @@ function onGridCelldoubleClick() {
   if (document.getElementById("obstacle-button").classList.contains("active"))
     obstacleState = false;
 }
-function onGridCellMouseLeave() {
-  if (document.getElementById("obstacle-button").classList.contains("active"))
-    obstacleState = true;
+function onGridMouseLeave() {
+  document.getElementById("obstacle-button").classList.remove("active");
+}
+function onObstacleButtonClick() {
+  obstacleState = true;
 }
 
-// Algo Buttons
+/************* Algo Buttons **********/
 
 document.getElementById("bfs-button").addEventListener("click", function () {
   onButtonClick("bfs-button");
