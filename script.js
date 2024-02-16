@@ -233,10 +233,6 @@ function runDFS() {
   const stack = [[startRow, startCol]];
 
   function processStack() {
-    if (stack.length === 0) {
-      return;
-    }
-
     const [row, col] = stack.pop();
     if (row === endRow && col === endCol) {
       let currentRow = row;
@@ -262,9 +258,15 @@ function runDFS() {
         cell.classList.add("visited");
         cell.dataset.prev = JSON.stringify([row, col]);
       }
+      // No need to continue exploring neighbor cells if you have reached the End Cell
+      if (r == endRow && c == endCol) {
+        while (stack.isEmpty === false) stack.pop();
+        stack.push([r, c]);
+        break;
+      }
     }
 
-    setTimeout(processStack, 20);
+    setTimeout(processStack, 10);
   }
 
   processStack();
