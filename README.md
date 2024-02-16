@@ -53,7 +53,7 @@ Dijkstra's Algorithm is a shortest-path algorithm that finds the shortest path b
 
 ## Demo
 
-For a live demo of the Pathfinding Algorithm Visualizer, visit [].
+For a live demo of the Pathfinding Algorithm Visualizer, visit https://abo-omar-74.github.io/Pathfinding-Algorithm-Visualizer/.
 
 ## Contributing
 
