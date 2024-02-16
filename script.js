@@ -196,7 +196,8 @@ function runBFS() {
       let currentCol = col;
       while (currentRow !== startRow || currentCol !== startCol) {
         const cell = document.getElementById(`${currentRow}-${currentCol}`);
-        cell.classList.add("path");
+        if (currentRow !== endRow || currentCol !== endCol)
+          cell.classList.add("path");
         const [prevRow, prevCol] = JSON.parse(cell.dataset.prev);
         currentRow = prevRow;
         currentCol = prevCol;
@@ -212,7 +213,7 @@ function runBFS() {
         visited.add(key);
         queue.push([r, c]);
         const cell = document.getElementById(`${r}-${c}`);
-        cell.classList.add("visited");
+        if (r !== endRow || c !== endCol) cell.classList.add("visited");
         cell.dataset.prev = JSON.stringify([row, col]);
       }
     }
@@ -226,13 +227,19 @@ function runDFS() {
   const stack = [[startRow, startCol]];
 
   function processStack() {
+    // Prevent infinty Loops in there is no path , or no end cell
+    if (stack.length === 0) {
+      return;
+    }
+
     const [row, col] = stack.pop();
     if (row === endRow && col === endCol) {
       let currentRow = row;
       let currentCol = col;
       while (currentRow !== startRow || currentCol !== startCol) {
         const cell = document.getElementById(`${currentRow}-${currentCol}`);
-        cell.classList.add("path");
+        if (currentRow !== endRow || currentCol !== endCol)
+          cell.classList.add("path");
         const [prevRow, prevCol] = JSON.parse(cell.dataset.prev);
         currentRow = prevRow;
         currentCol = prevCol;
@@ -248,7 +255,7 @@ function runDFS() {
         visited.add(key);
         stack.push([r, c]);
         const cell = document.getElementById(`${r}-${c}`);
-        cell.classList.add("visited");
+        if (r !== endRow || c !== endCol) cell.classList.add("visited");
         cell.dataset.prev = JSON.stringify([row, col]);
       }
       // No need to continue exploring neighbor cells if you have reached the End Cell
@@ -269,7 +276,6 @@ function runDFS() {
 
 function runDijkstra() {
   const distances = {};
-  const previous = {};
   const visited = new Set();
   const pq = new PriorityQueue();
 
@@ -280,15 +286,14 @@ function runDijkstra() {
   }
   distances[`${startRow}-${startCol}`] = 0;
 
-  pq.enqueue(`${startRow}-${startCol}`, 0);
+  pq.push(`${startRow}-${startCol}`, 0);
 
   function processStep() {
     if (pq.isEmpty() || visited.size === numRows * numCols) {
-      clearInterval(intervalId);
       return;
     }
 
-    const current = pq.dequeue().element;
+    const current = pq.pop().element;
     const [row, col] = current.split("-").map(Number);
 
     if (visited.has(current)) return;
@@ -299,12 +304,12 @@ function runDijkstra() {
       let currentCol = col;
       while (currentRow !== startRow || currentCol !== startCol) {
         const cell = document.getElementById(`${currentRow}-${currentCol}`);
-        cell.classList.add("path");
+        if (currentRow !== endRow || currentCol !== endCol)
+          cell.classList.add("path");
         const [prevRow, prevCol] = JSON.parse(cell.dataset.prev);
         currentRow = prevRow;
         currentCol = prevCol;
       }
-      clearInterval(intervalId);
       return;
     }
 
@@ -314,17 +319,21 @@ function runDijkstra() {
         const distance = distances[`${row}-${col}`] + 1;
         if (distance < distances[`${r}-${c}`]) {
           distances[`${r}-${c}`] = distance;
-          previous[`${r}-${c}`] = current;
-          pq.enqueue(`${r}-${c}`, distance);
+          pq.push(`${r}-${c}`, distance);
           const cell = document.getElementById(`${r}-${c}`);
-          cell.classList.add("visited");
+          if (r !== endRow || c !== endCol) cell.classList.add("visited");
           cell.dataset.prev = JSON.stringify([row, col]);
         }
       }
+      // give the highest priority to end cell , no need to explore more cells
+      if (r === endRow && c === endCol) {
+        pq.push(`${r}-${c}`, -1);
+        break;
+      }
     }
+    setTimeout(processStep, 10);
   }
-
-  const intervalId = setInterval(processStep, 20);
+  processStep();
 }
 function getNeighbors(row, col) {
   const neighbors = [];
@@ -342,12 +351,12 @@ class PriorityQueue {
     this.priorities = {};
   }
 
-  enqueue(element, priority) {
+  push(element, priority) {
     this.elements[element] = true;
     this.priorities[element] = priority;
   }
 
-  dequeue() {
+  pop() {
     let minPriority = Infinity;
     let minElement = null;
     for (const element in this.elements) {
