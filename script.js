@@ -10,6 +10,8 @@ let endCol = null;
 
 // Call the function to create the grid when the page loads
 
+let obstacleState = true;
+
 function createGrid() {
   const gridElement = document.getElementById("grid");
 
@@ -22,11 +24,16 @@ function createGrid() {
       newRow.push(0);
       row.appendChild(cell);
       cell.addEventListener("click", onGridCellClick);
+      cell.addEventListener("mouseenter", onGridCellMouseenter);
+      cell.addEventListener("dblclick", onGridCelldoubleClick);
     }
     grid.push(newRow);
     gridElement.appendChild(row);
   }
+  // Handling performance issue
+  gridElement.addEventListener("mouseleave", onGridCellMouseLeave);
 }
+
 window.onload = createGrid;
 
 let startButton = document.getElementById("start-point-button");
@@ -105,7 +112,7 @@ function onGridCellClick(event) {
     const [row, col] = cell.id.split("-").map(Number);
     endRow = row;
     endCol = col;
-  } else if (
+  } /*else if (
     document.getElementById("obstacle-button").classList.contains("active")
   ) {
     const [row, col] = cell.id.split("-").map(Number);
@@ -118,7 +125,7 @@ function onGridCellClick(event) {
       grid[row][col] = 1;
       cell.classList.add("obstacle");
     }
-  } else if (
+  }*/ else if (
     document
       .getElementById("remove-obstacle-button")
       .classList.contains("active")
@@ -134,6 +141,32 @@ function onGridCellClick(event) {
       cell.classList.remove("obstacle");
     }
   }
+}
+function onGridCellMouseenter(event) {
+  const cell = event.target;
+  if (
+    document.getElementById("obstacle-button").classList.contains("active") &&
+    obstacleState == true
+  ) {
+    const [row, col] = cell.id.split("-").map(Number);
+    if (
+      !(
+        (row === startRow && col === startCol) ||
+        (row === endRow && col === endCol)
+      )
+    ) {
+      grid[row][col] = 1;
+      cell.classList.add("obstacle");
+    }
+  }
+}
+function onGridCelldoubleClick() {
+  if (document.getElementById("obstacle-button").classList.contains("active"))
+    obstacleState = false;
+}
+function onGridCellMouseLeave() {
+  if (document.getElementById("obstacle-button").classList.contains("active"))
+    obstacleState = true;
 }
 
 // Algo Buttons
