@@ -57,8 +57,7 @@ RemoveObstacleButton.addEventListener("click", function () {
   onButtonClick("remove-obstacle-button");
 });
 Clear.addEventListener("click", function () {
-  onButtonClick("clear-button");
-  onDeleteButtonClick();
+  location.reload();
 });
 
 function onButtonClick(id) {
@@ -67,26 +66,6 @@ function onButtonClick(id) {
     button.classList.remove("active");
   });
   document.getElementById(id).classList.add("active");
-}
-
-function onDeleteButtonClick() {
-  const allCells = document.querySelectorAll("td");
-  allCells.forEach((cell) => {
-    cell.classList.remove(
-      "start",
-      "end",
-      "obstacle",
-      "active",
-      "visited",
-      "path"
-    );
-    const [row, col] = cell.id.split("-").map(Number);
-    grid[(row, col)] = 0;
-  });
-  startRow = null;
-  startCol = null;
-  endRow = null;
-  endCol = null;
 }
 
 function onGridCellClick(event) {
